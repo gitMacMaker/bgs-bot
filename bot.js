@@ -20,7 +20,7 @@ const client = new Client({
 
 client.once('clientReady', async () => {
   console.log(`BGS Notifier is online as ${client.user.tag}`);
-  await postRequestButton();
+  try { await postRequestButton(); } catch(e) { console.error('postRequestButton failed:', e.message); }
 });
 
 async function postRequestButton() {
@@ -202,6 +202,10 @@ client.on('interactionCreate', async (interaction) => {
       }
     } catch(_) {}
   }
+});
+
+client.on('error', (err) => {
+  console.error('Discord client error:', err.message);
 });
 
 client.login(BOT_TOKEN);
